@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name" translatable="false">WeatherApp</string>
+
+    <string name="current_screen_location_icon_content_description">Location icon</string>
+    <string name="current_screen_settings_button_content_description">Settings button</string>
+    <string name="current_screen_condition_image_content_description">%1$s image</string>
+    <string name="current_screen_humidity_label">Humidity</string>
+    <string name="current_screen_humidity_content_description">Drop icon</string>
+    <string name="current_screen_precipitation_label">Precipitation</string>
+    <string name="current_screen_precipitation_content_description">Umbrella icon</string>
+    <string name="current_screen_wind_label">Wind</string>
+    <string name="current_screen_wind_content_description">Wind icon</string>
+    <string name="current_screen_hour_condition_image_content_description">%1$s image</string>
+    <string name="current_screen_daily_forecast_label">Daily</string>
+    <string name="current_screen_next_day_condition_image_content_description">%1$s image</string>
+
+    <string name="settings_screen_title">Settings</string>
+    <string name="settings_back_button_content_description">Back to weather screen button</string>
+    <string name="settings_city_field_label">Write your city</string>
+    <string name="settings_city_clear_button_content_description">Clear city field</string>
+    <string name="settings_language_selector_label">Select your language</string>
+    <string name="settings_language_option_content_description">%1$s language button</string>
+    <string name="settings_speed_label">Speed</string>
+    <string name="settings_temperature_label">Temperature</string>
+    <string name="settings_precipitation_label">Precipitation</string>
+    <string name="settings_save_button">Save</string>
+</resources>

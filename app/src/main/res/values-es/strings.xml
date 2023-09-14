@@ -1,0 +1,25 @@
+<resources>
+    <string name="current_screen_location_icon_content_description">Icono de localización</string>
+    <string name="current_screen_settings_button_content_description">Botón de ajustes</string>
+    <string name="current_screen_condition_image_content_description">Imagen de %1$s</string>
+    <string name="current_screen_humidity_label">Humedad</string>
+    <string name="current_screen_humidity_content_description">Icono de gota</string>
+    <string name="current_screen_precipitation_label">Precipitación</string>
+    <string name="current_screen_precipitation_content_description">Icono de paraguas</string>
+    <string name="current_screen_wind_label">Viento</string>
+    <string name="current_screen_wind_content_description">Icono de viento</string>
+    <string name="current_screen_hour_condition_image_content_description">Imagen de %1$s</string>
+    <string name="current_screen_daily_forecast_label">Próximos días</string>
+    <string name="current_screen_next_day_condition_image_content_description">Imagen de %1$s</string>
+
+    <string name="settings_screen_title">Ajustes</string>
+    <string name="settings_back_button_content_description">Botón volver a la pantalla del tiempo</string>
+    <string name="settings_city_field_label">Escribe tu ciudad</string>
+    <string name="settings_city_clear_button_content_description">Borrar el campo ciudad</string>
+    <string name="settings_language_selector_label">Selecciona el idioma</string>
+    <string name="settings_language_option_content_description">Botón de idioma %1$s</string>
+    <string name="settings_speed_label">Velocidad</string>
+    <string name="settings_temperature_label">Temperatura</string>
+    <string name="settings_precipitation_label">Precipitación</string>
+    <string name="settings_save_button">Guardar</string>
+</resources>
