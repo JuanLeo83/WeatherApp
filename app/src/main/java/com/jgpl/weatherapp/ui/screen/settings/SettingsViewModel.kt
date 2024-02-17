@@ -1,7 +1,5 @@
 package com.jgpl.weatherapp.ui.screen.settings
 
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jgpl.weatherapp.domain.error.AppError
@@ -11,7 +9,6 @@ import com.jgpl.weatherapp.domain.usecase.SetUserConfigUseCase
 import com.jgpl.weatherapp.ui.screen.settings.mapper.SettingsErrorMapper
 import com.jgpl.weatherapp.ui.screen.settings.mapper.SettingsVoMapper
 import com.jgpl.weatherapp.ui.screen.settings.mapper.SuggestionMapper
-import com.jgpl.weatherapp.ui.screen.settings.vo.LanguageVo
 import com.jgpl.weatherapp.ui.screen.settings.vo.SuggestionVo
 import com.jgpl.weatherapp.utils.onFailure
 import com.jgpl.weatherapp.utils.onSuccess
@@ -21,7 +18,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 class SettingsViewModel(
     private val getUserConfigUseCase: GetUserConfigUseCase,
@@ -47,6 +43,7 @@ class SettingsViewModel(
                     val userConfig = settingsMapper.mapToVo(result)
                     _state.emit(
                         _state.value.copy(
+                            saved = false,
                             isLoadingConfig = false,
                             settingsVo = userConfig,
                             query = userConfig.city,
@@ -72,6 +69,7 @@ class SettingsViewModel(
                 it.onSuccess { _ ->
                     _state.emit(
                         _state.value.copy(
+                            saved = true,
                             isLoadingConfig = false,
                             error = null
                         )

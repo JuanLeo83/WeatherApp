@@ -2,11 +2,11 @@ package com.jgpl.weatherapp.ui.screen.settings
 
 import com.jgpl.weatherapp.ui.screen.settings.component.OptionItemVo
 import com.jgpl.weatherapp.ui.screen.settings.error.SettingsError
-import com.jgpl.weatherapp.ui.screen.settings.vo.LanguageVo
 import com.jgpl.weatherapp.ui.screen.settings.vo.SettingsVo
 import com.jgpl.weatherapp.ui.screen.settings.vo.SuggestionVo
 
 data class SettingsState(
+    val saved: Boolean = false,
     val isLoadingConfig: Boolean = false,
     val settingsVo: SettingsVo = SettingsVo(),
     val query: String = "",

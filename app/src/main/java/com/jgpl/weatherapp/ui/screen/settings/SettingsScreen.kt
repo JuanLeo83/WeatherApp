@@ -48,6 +48,10 @@ fun SettingsScreen(onClickBackAction: () -> Unit) {
     val viewModel: SettingsViewModel = getViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    if (state.saved) {
+        onClickBackAction()
+    }
+
     if (state.isLoadingConfig) {
         LoadingComponent()
     } else {
@@ -118,7 +122,6 @@ fun SettingsScreen(onClickBackAction: () -> Unit) {
                 Button(
                     onClick = {
                         viewModel.setSettings()
-                        onClickBackAction()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
