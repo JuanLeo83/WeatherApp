@@ -16,7 +16,8 @@ import com.jgpl.weatherapp.data.source.local.userconfig.mapper.UserConfigLocalMa
 import com.jgpl.weatherapp.data.source.WeatherDataSource
 import com.jgpl.weatherapp.data.source.remote.weather.RemoteWeatherDataSource
 import com.jgpl.weatherapp.data.source.remote.weather.api.WeatherApi
-import com.jgpl.weatherapp.data.source.remote.weather.config.ApiKey
+import com.jgpl.weatherapp.data.source.remote.weather.config.ApiKeyProvider
+import com.jgpl.weatherapp.data.source.remote.weather.config.ApiKeyProviderImpl
 import com.jgpl.weatherapp.data.source.remote.weather.mapper.CityApiMapper
 import com.jgpl.weatherapp.data.source.remote.weather.mapper.WeatherApiMapper
 import com.jgpl.weatherapp.domain.repository.ConfigRepository
@@ -44,7 +45,7 @@ val dataModule = module {
     }
     single { provideWeatherApi(get()) }
     single { getRemoteConfig() }
-    single { provideApiKey(get()) }
+    single<ApiKeyProvider> { ApiKeyProviderImpl(get()) }
     single { WeatherApiMapper() }
     single { CityApiMapper() }
     single<WeatherDataSource> { RemoteWeatherDataSource(get(), get(), get(), get()) }
@@ -54,18 +55,12 @@ private fun getDataStore(context: Context): DataStore<Preferences> = context.dat
 
 private fun provideWeatherApi(retrofit: Retrofit) = retrofit.create(WeatherApi::class.java)
 
-private fun getRemoteConfig(): FirebaseRemoteConfig {
+fun getRemoteConfig(): FirebaseRemoteConfig {
     val remoteConfig = Firebase.remoteConfig
     val configSettings = remoteConfigSettings {
         minimumFetchIntervalInSeconds = 3600
     }
     remoteConfig.setConfigSettingsAsync(configSettings)
-    remoteConfig.setDefaultsAsync(mapOf("weatherApiKey" to "1234abcdXYZ"))
     remoteConfig.fetchAndActivate()
     return remoteConfig
-}
-
-private fun provideApiKey(remoteConfig: FirebaseRemoteConfig): ApiKey {
-    val key = remoteConfig.getString("weatherApiKey")
-    return ApiKey(key)
 }

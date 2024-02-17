@@ -6,6 +6,6 @@ import com.jgpl.weatherapp.domain.model.CurrentWeatherModel
 import com.jgpl.weatherapp.utils.AppResult
 
 interface WeatherDataSource {
-    fun getCurrent(place: String): AppResult<CurrentWeatherModel, AppError>
-    fun getCities(query: String): AppResult<List<CityModel>, AppError>
+    suspend fun getCurrent(place: String): AppResult<CurrentWeatherModel, AppError>
+    suspend fun getCities(query: String): AppResult<List<CityModel>, AppError>
 }
