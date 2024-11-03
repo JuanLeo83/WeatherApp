@@ -6,16 +6,11 @@ import androidx.datastore.preferences.core.edit
 import com.jgpl.weatherapp.data.source.UserConfigDataSource
 import com.jgpl.weatherapp.data.source.local.userconfig.dto.UserConfigField
 import com.jgpl.weatherapp.data.source.local.userconfig.mapper.UserConfigLocalMapper
-import com.jgpl.weatherapp.domain.error.AppError
 import com.jgpl.weatherapp.domain.model.CelsiusName
 import com.jgpl.weatherapp.domain.model.KmphName
 import com.jgpl.weatherapp.domain.model.MillimeterName
 import com.jgpl.weatherapp.domain.model.UserConfigModel
 import com.jgpl.weatherapp.domain.model.defaultCity
-import com.jgpl.weatherapp.utils.AppResult
-import com.jgpl.weatherapp.utils.resultFailure
-import com.jgpl.weatherapp.utils.resultSuccess
-import com.jgpl.weatherapp.utils.resultSuccessEmpty
 import kotlinx.coroutines.flow.first
 
 class LocalConfigDataSource(
@@ -23,7 +18,7 @@ class LocalConfigDataSource(
     private val mapper: UserConfigLocalMapper
 ) : UserConfigDataSource {
 
-    override suspend fun getUserConfig(): AppResult<UserConfigModel, AppError> {
+    override suspend fun getUserConfig(): Result<UserConfigModel> {
         val config = dataStore.data.first()
 
         return try {
@@ -39,13 +34,13 @@ class LocalConfigDataSource(
                 speed = speed,
                 volume = volume
             )
-            resultSuccess(userConfig)
+            Result.success(userConfig)
         } catch (e: Exception) {
-            resultFailure(AppError.Unknown)
+            Result.failure(e)
         }
     }
 
-    override suspend fun setUserConfig(userConfig: UserConfigModel): AppResult<Unit, AppError> {
+    override suspend fun setUserConfig(userConfig: UserConfigModel): Result<Unit> {
         return try {
             dataStore.edit { config ->
                 with(userConfig) {
@@ -55,9 +50,9 @@ class LocalConfigDataSource(
                     config[UserConfigField.Volume.field] = volume.value
                 }
             }
-            resultSuccessEmpty()
+            Result.success(Unit)
         } catch (e: Exception) {
-            resultFailure(AppError.Unknown)
+            Result.failure(e)
         }
     }
 

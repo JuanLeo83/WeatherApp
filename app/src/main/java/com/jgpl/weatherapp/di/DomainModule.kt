@@ -7,7 +7,7 @@ import com.jgpl.weatherapp.domain.usecase.SetUserConfigUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    single { GetCurrentWeatherUseCase(get(), get()) }
+    single { GetCurrentWeatherUseCase(get()) }
     single { GetLocationsUseCase(get()) }
     single { GetUserConfigUseCase(get()) }
     single { SetUserConfigUseCase(get()) }

@@ -31,20 +31,12 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(Route.CurrentScreen.name) {
                             CurrentScreen {
-                                navController.navigate(Route.SettingsScreen.name) {
-                                    popUpTo(Route.CurrentScreen.name) {
-                                        inclusive = true
-                                    }
-                                }
+                                navController.navigate(Route.SettingsScreen.name)
                             }
                         }
                         composable(Route.SettingsScreen.name) {
                             SettingsScreen {
-                                navController.navigate(Route.CurrentScreen.name) {
-                                    popUpTo(Route.SettingsScreen.name) {
-                                        inclusive = true
-                                    }
-                                }
+                                navController.popBackStack()
                             }
                         }
                     }

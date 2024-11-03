@@ -2,7 +2,7 @@ package com.jgpl.weatherapp.ui.screen.current.mapper
 
 import android.content.Context
 import com.jgpl.weatherapp.R
-import com.jgpl.weatherapp.domain.model.CurrentWeatherAndUserConfig
+import com.jgpl.weatherapp.domain.model.CurrentWeatherModel
 import com.jgpl.weatherapp.domain.model.HourForecastModel
 import com.jgpl.weatherapp.domain.model.NextDayModel
 import com.jgpl.weatherapp.domain.model.PrecipitationModel
@@ -26,22 +26,22 @@ class CurrentVoMapper(
     private val context: Context
 ) {
 
-    fun map(model: CurrentWeatherAndUserConfig): CurrentVo {
+    fun map(current: CurrentWeatherModel, config: UserConfigModel): CurrentVo {
         return CurrentVo(
-            cityName = model.current.name,
+            cityName = current.name,
             date = getFormattedDate(),
             temperature = getFormattedTemperature(
-                model.current.temperature,
-                model.config.temperature
+                current.temperature,
+                config.temperature
             ),
-            conditionIcon = getFormattedIconUrl(model.current.condition.icon),
-            conditionText = model.current.condition.text,
-            humidity = mapHumidity(model.current.humidity),
-            precipitation = mapPrecipitation(model.current.precipitation, model.config.volume),
-            windSpeed = mapWindSpeed(model.current.wind, model.config.speed),
-            windDirection = mapWindDirection(model.current.wind),
-            todayHourForecast = mapHourForecast(model.current.todayHourForecast, model.config),
-            nextDaysForecast = mapNextDaysForecast(model.current.nextDaysForecast, model.config)
+            conditionIcon = getFormattedIconUrl(current.condition.icon),
+            conditionText = current.condition.text,
+            humidity = mapHumidity(current.humidity),
+            precipitation = mapPrecipitation(current.precipitation, config.volume),
+            windSpeed = mapWindSpeed(current.wind, config.speed),
+            windDirection = mapWindDirection(current.wind),
+            todayHourForecast = mapHourForecast(current.todayHourForecast, config),
+            nextDaysForecast = mapNextDaysForecast(current.nextDaysForecast, config)
         )
     }
 

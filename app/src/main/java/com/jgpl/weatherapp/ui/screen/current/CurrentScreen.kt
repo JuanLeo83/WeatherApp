@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -48,10 +49,11 @@ import org.koin.androidx.compose.koinViewModel
 fun CurrentScreen(onClickSettingsAction: () -> Unit) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(CurrentScreenColorStart)
-    val interactionSource = remember { MutableInteractionSource() }
 
     val viewModel: CurrentViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) { viewModel.getCurrentWeather()}
 
     if (state.isLoading) {
         LoadingComponent()
@@ -77,7 +79,7 @@ fun CurrentScreen(onClickSettingsAction: () -> Unit) {
                     .padding(12.dp)
                     .size(32.dp)
                     .clickable(
-                        interactionSource = interactionSource,
+                        interactionSource = remember { MutableInteractionSource() },
                         indication = null
                     ) { onClickSettingsAction() }
             )

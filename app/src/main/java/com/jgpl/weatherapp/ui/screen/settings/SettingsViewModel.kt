@@ -2,21 +2,15 @@ package com.jgpl.weatherapp.ui.screen.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jgpl.weatherapp.domain.error.AppError
 import com.jgpl.weatherapp.domain.usecase.GetLocationsUseCase
 import com.jgpl.weatherapp.domain.usecase.GetUserConfigUseCase
 import com.jgpl.weatherapp.domain.usecase.SetUserConfigUseCase
-import com.jgpl.weatherapp.ui.screen.settings.mapper.SettingsErrorMapper
+import com.jgpl.weatherapp.ui.screen.settings.error.SettingsError
 import com.jgpl.weatherapp.ui.screen.settings.mapper.SettingsVoMapper
 import com.jgpl.weatherapp.ui.screen.settings.mapper.SuggestionMapper
 import com.jgpl.weatherapp.ui.screen.settings.vo.SuggestionVo
-import com.jgpl.weatherapp.utils.onFailure
-import com.jgpl.weatherapp.utils.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
@@ -24,8 +18,7 @@ class SettingsViewModel(
     private val setUserConfigUseCase: SetUserConfigUseCase,
     private val getLocationsUseCase: GetLocationsUseCase,
     private val settingsMapper: SettingsVoMapper,
-    private val suggestionMapper: SuggestionMapper,
-    private val errorMapper: SettingsErrorMapper
+    private val suggestionMapper: SuggestionMapper
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SettingsState())
@@ -36,10 +29,10 @@ class SettingsViewModel(
     }
 
     private fun getSettings() {
-        getUserConfigUseCase.prepare(Unit)
-            .onStart { setLoading() }
-            .onEach {
-                it.onSuccess { result ->
+        viewModelScope.launch {
+            setLoading()
+            getUserConfigUseCase()
+                .onSuccess { result ->
                     val userConfig = settingsMapper.mapToVo(result)
                     _state.emit(
                         _state.value.copy(
@@ -54,19 +47,16 @@ class SettingsViewModel(
                         )
                     )
                 }
-                it.onFailure { error ->
-                    showError(error)
-                }
-            }
-            .launchIn(viewModelScope)
+                .onFailure { showError() }
+        }
     }
 
     fun setSettings() {
-        val userConfig = settingsMapper.mapToModel(_state.value.settingsVo)
-        setUserConfigUseCase.prepare(userConfig)
-            .onStart { setLoading() }
-            .onEach {
-                it.onSuccess { _ ->
+        viewModelScope.launch {
+            setLoading()
+            val userConfig = settingsMapper.mapToModel(_state.value.settingsVo)
+            setUserConfigUseCase(userConfig)
+                .onSuccess {
                     _state.emit(
                         _state.value.copy(
                             saved = true,
@@ -75,11 +65,8 @@ class SettingsViewModel(
                         )
                     )
                 }
-                it.onFailure { error ->
-                    showError(error)
-                }
-            }
-            .launchIn(viewModelScope)
+                .onFailure { showError() }
+        }
     }
 
     private suspend fun setLoading() {
@@ -88,12 +75,11 @@ class SettingsViewModel(
         _state.emit(_state.value.copy(isLoadingConfig = true))
     }
 
-    private suspend fun showError(error: AppError) {
-        val settingsError = errorMapper.map(error)
+    private suspend fun showError() {
         _state.emit(
             _state.value.copy(
                 isLoadingConfig = false,
-                error = settingsError
+                error = SettingsError.Unknown
             )
         )
     }
@@ -112,14 +98,11 @@ class SettingsViewModel(
     private fun modifyQueryState(value: String) {
         viewModelScope.launch {
             _state.emit(_state.value.copy(query = value, isSuggestionSelected = false))
-        }
 
-        if (_state.value.query.isEmpty()) return
+            if (_state.value.query.isEmpty()) return@launch
 
-        getLocationsUseCase.prepare(_state.value.query)
-            .onStart { _state.emit(_state.value.copy(isLoadingSuggestions = true)) }
-            .onEach {
-                it.onSuccess { result ->
+            getLocationsUseCase(_state.value.query)
+                .onSuccess { result ->
                     val suggestions = suggestionMapper.map(result)
                     _state.emit(
                         _state.value.copy(
@@ -128,11 +111,8 @@ class SettingsViewModel(
                         )
                     )
                 }
-                it.onFailure { error ->
-                    showError(error)
-                }
-            }
-            .launchIn(viewModelScope)
+                .onFailure { showError() }
+        }
     }
 
     fun onSelectSuggestion(suggestion: SuggestionVo) {
