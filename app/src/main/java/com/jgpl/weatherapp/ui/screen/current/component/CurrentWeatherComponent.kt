@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,35 +26,45 @@ fun CurrentWeatherComponent(
     condition: String,
     iconUrl: String
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp),
+        horizontalArrangement = Arrangement.Center
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AsyncImage(
-                model = iconUrl,
-                contentDescription = stringResource(id = R.string.current_screen_condition_image_content_description, condition),
-                modifier = Modifier.size(150.dp)
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                AsyncImage(
+                    model = iconUrl,
+                    contentDescription = stringResource(
+                        id = R.string.current_screen_condition_image_content_description,
+                        condition
+                    ),
+                    modifier = Modifier.size(150.dp)
+                )
+
+                Text(
+                    text = temperature,
+                    fontSize = 100.sp,
+                    color = Color.White
+                )
+            }
 
             Text(
-                text = temperature,
-                fontSize = 100.sp,
-                color = Color.White
+                text = condition,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center,
+                color = Color.White,
+                modifier = Modifier.fillMaxWidth()
             )
         }
-
-        Text(
-            text = condition,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
-            textAlign = TextAlign.Center,
-            color = Color.White,
-            modifier = Modifier.fillMaxWidth()
-        )
     }
 }
 

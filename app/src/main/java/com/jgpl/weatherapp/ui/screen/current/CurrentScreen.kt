@@ -42,7 +42,7 @@ import com.jgpl.weatherapp.ui.screen.current.component.NextDayListComponent
 import com.jgpl.weatherapp.ui.screen.current.vo.CurrentVo
 import com.jgpl.weatherapp.ui.theme.CurrentScreenColorEnd
 import com.jgpl.weatherapp.ui.theme.CurrentScreenColorStart
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CurrentScreen(onClickSettingsAction: () -> Unit) {
@@ -50,7 +50,7 @@ fun CurrentScreen(onClickSettingsAction: () -> Unit) {
     systemUiController.setStatusBarColor(CurrentScreenColorStart)
     val interactionSource = remember { MutableInteractionSource() }
 
-    val viewModel: CurrentViewModel = getViewModel()
+    val viewModel: CurrentViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     if (state.isLoading) {
@@ -109,36 +109,15 @@ private fun HeaderComponent(current: CurrentVo) {
     Column(
         Modifier.padding(bottom = 15.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            LocationComponent(locationName = current.cityName, size = 2f)
-        }
+        LocationComponent(locationName = current.cityName, size = 2f)
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 5.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            DateComponent(date = current.date, size = 1.4f)
-        }
+        DateComponent(date = current.date, size = 1.4f)
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            CurrentWeatherComponent(
-                temperature = current.temperature,
-                condition = current.conditionText,
-                iconUrl = current.conditionIcon
-            )
-        }
+        CurrentWeatherComponent(
+            temperature = current.temperature,
+            condition = current.conditionText,
+            iconUrl = current.conditionIcon
+        )
     }
 }
 

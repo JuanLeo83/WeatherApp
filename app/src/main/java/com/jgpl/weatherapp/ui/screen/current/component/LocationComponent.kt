@@ -1,7 +1,9 @@
 package com.jgpl.weatherapp.ui.screen.current.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -20,7 +22,13 @@ import com.jgpl.weatherapp.R
 
 @Composable
 fun LocationComponent(locationName: String, size: Float = 1f) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Image(
             painter = painterResource(id = R.drawable.ic_location),
             contentDescription = stringResource(id = R.string.current_screen_location_icon_content_description),

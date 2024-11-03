@@ -38,14 +38,14 @@ import com.jgpl.weatherapp.ui.component.LoadingComponent
 import com.jgpl.weatherapp.ui.screen.settings.component.CityFieldComponent
 import com.jgpl.weatherapp.ui.screen.settings.component.SuggestionListComponent
 import com.jgpl.weatherapp.ui.screen.settings.component.TwoOptionsSelectorComponent
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SettingsScreen(onClickBackAction: () -> Unit) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(MaterialTheme.colorScheme.background)
 
-    val viewModel: SettingsViewModel = getViewModel()
+    val viewModel: SettingsViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     if (state.saved) {
