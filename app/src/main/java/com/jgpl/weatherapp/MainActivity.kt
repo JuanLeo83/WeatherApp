@@ -36,12 +36,13 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Route.SettingsScreen.name) {
                             SettingsScreen {
-                                navController.popBackStack()
+                                navController.navigateUp()
                             }
                         }
                     }
                 }
             }
         }
+
     }
 }
